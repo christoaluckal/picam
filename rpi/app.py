@@ -9,15 +9,21 @@ app = Flask(__name__, template_folder='.')
 camera = picamera.PiCamera()
 
 def takeimage(shut,reso,iso_val):
-    camera = picamera.PiCamera(resolution=reso)
-    camera.shutter_speed = shut
-    camera.iso = iso_val
-    camera.capture('image.jpg')
-    # camera.start_preview()
-    # sleep(10)
-    # camera.stop_preview()
-    camera.close()
-    return
+   camera = picamera.PiCamera(resolution=reso)
+   camera.shutter_speed = shut
+   camera.iso = iso_val
+   output = picamera.array.PiRGBArray(camera)
+   camera.capture(output, 'bgr')
+   frame = output.array
+   #cv2.flip(frame,0)
+
+   # APPLY FILTERS HERE
+   # frame = cv2.GaussianBlur(frame,(5,5),cv2.BORDER_DEFAULT) 
+
+   # ret, jpeg = cv2.imencode('.jpg', frame)
+   cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+   cv2.imwrite('image.jpg',frame)
+   camera.close()
 
 # A decorator used to tell the application
 # which URL is associated function
@@ -68,7 +74,7 @@ def gen():
          #cv2.flip(frame,0)
          ret, jpeg = cv2.imencode('.jpg', frame)
          cv2.cvtColor(jpeg,cv2.COLOR_BGR2RGB)
-         jpeg = cv2.flip(jpeg,1)
+         # jpeg = cv2.flip(jpeg,1)
          output.truncate(0)
          yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
