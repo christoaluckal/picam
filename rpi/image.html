@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <!-- <form method="post">
-            <label for="framerate">Framerate</label>
-            <input type="text" id="framerate" name="framerate" placeholder="framerate" value="30">
+        <form method="post">
             <label for="shutter">Shutter Speed</label>
             <input type="text" id="shutter" name="shutter" placeholder="shutter time in microseconds" value="1000">
             <label for="resolution">Choose a resolution</label>
@@ -22,13 +20,7 @@
               <option value="640">640</option>
               <option value="800">800</option>
             </select>
-            <label for="type">Choose mode</label>
-            <select id="type" name="type">
-                <option value="preview">Preview</option>
-                <option value="photo">Photo</option>  
-            </select>
             <button type="submit">Input</button>
-        </form> -->
-        <img src="{{ url_for('video_feed') }}" />
+        </form>
     </body>
 </html>
