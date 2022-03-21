@@ -37,6 +37,8 @@ def index():
       mode = request.form['submit_button']
       if mode == "preview":
          camera = picamera.PiCamera(resolution=(640,480),framerate=24)
+         iso_val = request.form.get("iso")
+         camera.iso= int(iso_val)
          return render_template("video.html")
       if mode == "image":
          return redirect(url_for('image'))
@@ -65,9 +67,9 @@ def image():
 
 def gen():
    global camera
-   camera.resolution = (640,480)
+   # camera.resolution = (640,480)
    # camera.framerate = 60 
-   with picamera.array.PiRGBArray(camera,size=(640,480)) as output:
+   with picamera.array.PiRGBArray(camera) as output:
       while True:
          camera.capture(output, 'bgr',use_video_port=True)
          frame = output.array
@@ -80,7 +82,7 @@ def gen():
                b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
             
 
-@app.route('/video_feed')
+@app.route('/video_feed',methods=["GET","POST"])
 def video_feed():
      return Response(gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
