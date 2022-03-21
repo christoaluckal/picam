@@ -1,3 +1,9 @@
 # picam
 
-Run with `flask run --host=0.0.0.0` and then access via IP
+## Requirements
+1.  Python OpenCV
+2.  Flask
+3.  PiCamera
+
+Run with `python app.py` and then access via IP-Port
+
